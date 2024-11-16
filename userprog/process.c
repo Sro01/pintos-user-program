@@ -200,7 +200,7 @@ process_exec (void *f_name) {
 	_if.R.rdi = count; // 인자의 개수를 rdi 레지스터에 저장
 	_if.R.rsi = (char *)_if.rsp + 8; // 스택에 마지막에 추가한 fake address를 담기 직전의 주소가 argv의 시작주소이므로, rsi에는 현재 스택포인터 rsp에 8을 더한 값을 저장
 
-	// hex_dump(_if.rsp, _if.rsp, USER_STACK - (uint64_t)_if.rsp, true); // user stack을 16진수로 프린트
+	hex_dump(_if.rsp, _if.rsp, USER_STACK - (uint64_t)_if.rsp, true); // user stack을 16진수로 프린트
 	
 	/* 로드에 실패하면 종료합니다. */
 	palloc_free_page (file_name);
@@ -219,7 +219,7 @@ void argument_stack(char **parse, int count, void **rsp) // 주소를 전달받�
 	/* 프로그램 이름, 인자 문자열 push */
 	for (int i = count - 1; i > -1; i--)
 	{
-		for (int j = strlen(parse[i]); i > -1; j--)
+		for (int j = strlen(parse[i]); j > -1; j--)
 		{
 			(*rsp)--; // 스택 주소 감소
 			**(char **)rsp = parse[i][j]; // 주소에 문자 저장
@@ -262,7 +262,7 @@ int
 process_wait (tid_t child_tid UNUSED) {
 	/* XXX: 힌트) pintos가 process_wait (initd)에서 종료되면
 	 * XXX:       process_wait을 구현하기 전에 여기에 무한 루프를 추가하는 것을 권장합니다. */
-	for (int i = 0; i < 100000000; i++) {
+	for (int i = 0; i < 1000000000; i++) {
 
 	}
 	return -1;
